@@ -1,0 +1,14 @@
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.exe
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.deps.json
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.runtimeconfig.json
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.runtimeconfig.dev.json
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.dll
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\SteeringWheelTest.pdb
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.csprojAssemblyReference.cache
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.AssemblyInfoInputs.cache
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.AssemblyInfo.cs
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.csproj.CoreCompileInputs.cache
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.dll
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.pdb
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\obj\Debug\netcoreapp3.1\SteeringWheelTest.genruntimeconfig.cache
+C:\Users\andi\Arbeit\steering-wheel\SteeringWheelTest\SteeringWheelTest\bin\Debug\netcoreapp3.1\LogitechSteeringWheelEnginesWrapper.dll
