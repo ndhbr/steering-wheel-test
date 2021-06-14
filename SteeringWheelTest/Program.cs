@@ -12,76 +12,110 @@ namespace SteeringWheelTest
 
     class Main
     {
+        // USB Steering Wheel Device ID
+        const int DEVICE_ID = 1;
+        const int LOOP_DELAY_MS = 1000;
+
+        // State
+        private int rotation = 0;
+        private readonly bool initialized = false;
+
+        // Random
+        private readonly Random random = new Random();
+
         public Main()
         {
-            Random rand = new Random();
-            bool initialized = false;
-            bool forward = true;
-            LogitechGSDK.LogiSteeringInitialize(false);
+            Initialize();
 
-            if (!LogitechGSDK.LogiIsConnected(0))
+            if (!LogitechGSDK.LogiIsConnected(DEVICE_ID))
             {
-                Console.WriteLine("Not connected");
+                ErrorPrint("[ERROR] Lenkrad nicht verbunden, oder falsche Device ID angegeben");
+                return;
             }
+
 
             while (true)
             {
-                if (LogitechGSDK.LogiUpdate())
+                if (LogitechGSDK.LogiUpdate() && LogitechGSDK.LogiIsConnected(DEVICE_ID))
                 {
-                    // Random bumpy road effect
-                    if (LogitechGSDK.LogiIsPlaying(0, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
+                    if (LogitechGSDK.LogiButtonIsPressed(DEVICE_ID, 7))
                     {
-                        LogitechGSDK.LogiStopBumpyRoadEffect(0);
-                    }
-
-                    // Stop button at left bottom button on wheel
-                    if (LogitechGSDK.LogiButtonTriggered(0, 6))
-                    {
+                        DebugPrint("Exit button pressed");
                         break;
                     }
 
                     if (!initialized)
                     {
-                        // Reset to center
-                        Console.WriteLine("Initializing steering wheel... (4000 ms)");
-                        LogitechGSDK.LogiPlaySpringForce(0, 0, 50, 50);
-                        System.Threading.Thread.Sleep(2500);
-                        Console.WriteLine("Starting simulation:");
+                        CenterWheel();
                         initialized = true;
-                        continue;
                     }
-
-                    int offsetPercentage;
-
-                    if (forward)
-                    {
-                        offsetPercentage = 15;
-                    } 
                     else
                     {
-                        offsetPercentage = -15;
+                        int newRotation = random.Next(20, 50);
+                        int saturation = random.Next(10, 30);
+                        int coefficient = random.Next(10, 30);
+
+                        if (rotation > 0 || rotation < 0)
+                        {
+                            rotation = 0;
+                            CenterWheel(saturation, coefficient);
+                        }
+                        else
+                        {
+                            rotation = newRotation;
+
+                            if (random.Next(0, 2) == 1)
+                            {
+                                rotation = -rotation;
+                            }
+
+                            RotateWheel(rotation, saturation, coefficient);
+                        }
                     }
 
-                    LogitechGSDK.LogiPlaySpringForce(0, offsetPercentage, 10, 100);
-
-                    // Invert direction
-                    forward = !forward;
-
-                    Console.WriteLine("Turning " + ((!forward) ? "backwards" : "forwards") + " (1500 ms)");
-
-                    // Random bumpy road effect
-                    if (rand.Next(0, 100) > 80)
-                    {
-                        Console.WriteLine("Brrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-                        LogitechGSDK.LogiPlayBumpyRoadEffect(0, 30);
-                    }
-
-                    System.Threading.Thread.Sleep(1500);
+                    System.Threading.Thread.Sleep(LOOP_DELAY_MS);
                 }
             }
 
-            // Shutdown
+            Shutdown();
+        }
+
+        void Initialize()
+        {
+            Console.WriteLine("************** WELCOME! **************");
+            DebugPrint("Initializing wheel...");
+            LogitechGSDK.LogiSteeringInitialize(true);
+        }
+
+        void Shutdown()
+        {
+            CenterWheel();
+            DebugPrint("Shutting down system...");
+            Console.WriteLine("************** GOOD BYE! **************");
             LogitechGSDK.LogiSteeringShutdown();
+        }
+
+        void CenterWheel(int saturation = 100, int coefficient = 100)
+        {
+            DebugPrint("Centering wheel");
+            rotation = 0;
+            LogitechGSDK.LogiPlaySpringForce(DEVICE_ID, 0, saturation, coefficient);
+        }
+
+        void RotateWheel(int offset, int saturation = 100, int coefficient = 100)
+        {
+            DebugPrint("Rotating wheel to " + offset + " (saturation: " + saturation + ", coefficient: " + coefficient + ")");
+            LogitechGSDK.LogiPlaySpringForce(DEVICE_ID, offset, saturation, coefficient);
+        }
+
+        void DebugPrint(String msg)
+        {
+            Console.WriteLine("[DEBUG] " + msg);
+        }
+
+        void ErrorPrint(String msg)
+        {
+            Console.WriteLine("[ERROR] " + msg);
         }
     }
 }
