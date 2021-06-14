@@ -55,11 +55,11 @@ namespace SteeringWheelTest
 
                     if (forward)
                     {
-                        offsetPercentage = 30;
+                        offsetPercentage = 15;
                     } 
                     else
                     {
-                        offsetPercentage = -30;
+                        offsetPercentage = -15;
                     }
 
                     LogitechGSDK.LogiPlaySpringForce(0, offsetPercentage, 10, 100);
