@@ -38,6 +38,8 @@ namespace SteeringWheelTest
             {
                 if (LogitechGSDK.LogiUpdate() && LogitechGSDK.LogiIsConnected(DEVICE_ID))
                 {
+                    StopBumpWheel();
+
                     if (LogitechGSDK.LogiButtonIsPressed(DEVICE_ID, 7))
                     {
                         DebugPrint("Exit button pressed");
@@ -70,6 +72,11 @@ namespace SteeringWheelTest
                             }
 
                             RotateWheel(rotation, saturation, coefficient);
+
+                            if (random.Next(0, 2) == 1)
+                            {
+                                BumpWheel();
+                            }
                         }
                     }
 
@@ -80,6 +87,9 @@ namespace SteeringWheelTest
             Shutdown();
         }
 
+        /// <summary>
+        /// Initializes the wheel
+        /// </summary>
         void Initialize()
         {
             Console.WriteLine("************** WELCOME! **************");
@@ -87,6 +97,9 @@ namespace SteeringWheelTest
             LogitechGSDK.LogiSteeringInitialize(true);
         }
 
+        /// <summary>
+        /// Centers and shuts down the wheel
+        /// </summary>
         void Shutdown()
         {
             CenterWheel();
@@ -95,6 +108,11 @@ namespace SteeringWheelTest
             LogitechGSDK.LogiSteeringShutdown();
         }
 
+        /// <summary>
+        /// Centers the wheel
+        /// </summary>
+        /// <param name="saturation">Saturation 0 - 100</param>
+        /// <param name="coefficient">Coefficient Percentage -100 - 100</param>
         void CenterWheel(int saturation = 100, int coefficient = 100)
         {
             DebugPrint("Centering wheel");
@@ -102,17 +120,50 @@ namespace SteeringWheelTest
             LogitechGSDK.LogiPlaySpringForce(DEVICE_ID, 0, saturation, coefficient);
         }
 
+        /// <summary>
+        /// Rotates the wheel
+        /// </summary>
+        /// <param name="offset">Offset -100 - 100</param>
+        /// <param name="saturation">Saturation 0 - 100</param>
+        /// <param name="coefficient">Coefficient Percentage -100 - 100</param>
         void RotateWheel(int offset, int saturation = 100, int coefficient = 100)
         {
             DebugPrint("Rotating wheel to " + offset + " (saturation: " + saturation + ", coefficient: " + coefficient + ")");
             LogitechGSDK.LogiPlaySpringForce(DEVICE_ID, offset, saturation, coefficient);
         }
 
+        /// <summary>
+        /// Starts bumping the wheel
+        /// </summary>
+        void BumpWheel()
+        {
+            LogitechGSDK.LogiPlayBumpyRoadEffect(DEVICE_ID, 10);
+        }
+
+        /// <summary>
+        /// This method stops bumping the wheel (in case it is bumping)
+        /// </summary>
+        void StopBumpWheel()
+        {
+            if (LogitechGSDK.LogiIsPlaying(DEVICE_ID, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
+            {
+                LogitechGSDK.LogiStopBumpyRoadEffect(DEVICE_ID);
+            }
+        }
+
+        /// <summary>
+        /// This method prints debug messages to the console
+        /// </summary>
+        /// <param name="msg">Message</param>
         void DebugPrint(String msg)
         {
             Console.WriteLine("[DEBUG] " + msg);
         }
 
+        /// <summary>
+        /// This method prints error messages to the console
+        /// </summary>
+        /// <param name="msg">Message</param>
         void ErrorPrint(String msg)
         {
             Console.WriteLine("[ERROR] " + msg);
